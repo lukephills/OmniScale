@@ -40,10 +40,10 @@ class Sine extends ToneTS {
 		// this.Sustain = 0.15 + (Math.random()*0.1);
 		// this.Release = 0.1 + (Math.random()*0.1);
 
-		this.Attack = 0.01;
-		this.Decay = 0.2;
+		this.Attack = 0.1;
+		this.Decay = 0.7;
 		this.Sustain = 1;
-		this.Release = 0.01;
+		this.Release = 0.5;
 
 		this.osc = this.ctx.createOscillator();
 		this.osc.type = "triangle";

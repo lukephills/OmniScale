@@ -25,7 +25,7 @@ class App {
 		'rgb(250,230,176)', //yellow
 	];
 
-	public lines: number = 24;
+	public lines: number = 48;
 	private activeTouches: any = {};
 
 
