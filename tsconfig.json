@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ES6", // running on node v5
+//    "jsx": "preserve",
+    "allowJs": true,
+    "experimentalDecorators": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true
+  },
+  "exclude": [
+    "node_modules",
+    "config",
+    "dev_server.js",
+    "typings/browser.d.ts",
+    "typings/browser"
+  ]
+}

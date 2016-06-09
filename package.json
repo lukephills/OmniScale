@@ -1,0 +1,65 @@
+{
+  "name": "scales",
+  "version": "2.0.5",
+  "description": "Synthesizer with musical scales using multi-touch & keyboard",
+  "main": "index.js",
+  "scripts": {
+    "android": "npm run build && cd phonegap/theremin && cordova build android",
+    "ios": "npm run build && cd phonegap/theremin && cordova build ios",
+    "all": "npm run build && cd phonegap/theremin && cordova build ios && cordova build android",
+    "icons": "cd phonegap/theremin && cordova-icon && cordova-splash",
+    "copyIndex": "cp build/index.html phonegap/theremin/www",
+    "copyFonts": "cp -a build/fonts phonegap/theremin/www/",
+    "copyScript": "rm -r phonegap/theremin/www/static && cp -a build/static phonegap/theremin/www",
+    "cordova:copyfiles": "npm run copyIndex && npm run copyScript && npm run copyFonts",
+    "build:webpack": "NODE_ENV=production webpack --config config/webpack.prod.js && npm run moveFonts",
+    "build": "npm run clean && npm run build:webpack && npm run cordova:copyfiles",
+    "zip": "zip -r build/bundle.zip build/*",
+    "clean": "rimraf build",
+    "start": "node dev_server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "moveFonts": "mv -v build/static/fonts build/"
+  },
+  "paths": {
+    "Tone": "tone/Tone"
+  },
+  "author": "Luke Phillips",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lukephills/Theremin"
+  },
+  "bugs": {
+    "url": "https://github.com/lukephills/Theremin/issues"
+  },
+  "homepage": "https://github.com/lukephills/Theremin",
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.9.1",
+    "babel-preset-es2015": "^6.9.0",
+    "copy-webpack-plugin": "^1.1.1",
+    "css-loader": "^0.23.1",
+    "express": "^4.13.4",
+    "rimraf": "^2.5.1",
+    "style-loader": "^0.13.0",
+    "tslint": "^3.3.0",
+    "tslint-loader": "^2.1.0",
+    "webpack": "^1.12.12",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.6.4"
+  },
+  "dependencies": {
+    "audio-buffer-utils": "^2.0.1",
+    "document-visibility": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "inline-style-prefixer": "^0.6.7",
+    "inline-worker": "^1.0.0",
+    "merge-audio-buffers": "^1.0.0",
+    "normalize.css": "^3.0.3",
+    "tone": "^0.6.1",
+    "ts-loader": "^0.8.1",
+    "typescript": "^1.8.2",
+    "worker-loader": "^0.7.0",
+    "worker-timer": "^1.0.0"
+  }
+}
