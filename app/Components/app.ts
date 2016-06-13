@@ -5,7 +5,12 @@ import {IdentifierIndexMap, isCordovaIOS} from '../Utils/utils';
 import {getItemFromArrayPool} from '../Utils/array';
 // import styles from '../Styles/styles.css';
 
+const URL: any = require('domurl'); //TODO: make typescript definitions
 
+//TODO: seperate out to npm library
+import {ScaleList} from '../Utils/Scales/updated-scales';
+import {UpdateURL} from '../Utils/Urls';
+import {getPerfectFifthIndex, getPerfectFourthIndex} from '../Utils/Audio/scales';
 
 class App {
 
@@ -14,20 +19,43 @@ class App {
 	private touches: IdentifierIndexMap;
 	private _DrawAnimationFrame: number;
 	public pixelRatio: number = CanvasUtils.getPixelRatio();
+	// public colors: string[] = [
+	// 	'rgb(198,199,192)', //grey
+	// 	'rgb(215,251,247)', //light blue
+	// 	'rgb(248,204,228)', //pink
+	// 	'rgb(222,250,214)', //green
+	// 	'rgb(181,195,229)', //purple
+	// 	'rgb(252,224,204)', //peach
+	// 	'rgb(194,227,252)', //blue
+	// 	'rgb(250,230,176)', //yellow
+	// ];
 	public colors: string[] = [
 		'rgb(198,199,192)', //grey
-		'rgb(215,251,247)', //light blue
+		'rgb(222,250,214)', //green
+		'rgb(194,227,252)', //blue
+		'rgb(252,224,204)', //peach
 		'rgb(248,204,228)', //pink
 		'rgb(222,250,214)', //green
-		'rgb(181,195,229)', //purple
-		'rgb(252,224,204)', //peach
 		'rgb(194,227,252)', //blue
-		'rgb(250,230,176)', //yellow
 	];
+	public pallette = {
+		grey: 'rgb(198,199,192)', //grey
+		green: 'rgb(222,250,214)', //green
+		blue: 'rgb(194,227,252)', //blue
+		peach: 'rgb(252,224,204)', //peach
+		pink: 'rgb(248,204,228)', //pink
+	}
+
+	public white = 'rgb(254,254,245)'; // white-cream
 
 	public lines: number = 48;
+	public URLManager;
 	private activeTouches: any = {};
 
+	private activeScaleListItem: Element;
+
+	private activeScaleClassName: string =  'scale-list-item--active';
+	private octavesToDisplay = 5;
 
 
 
@@ -36,27 +64,100 @@ class App {
 		this.canvas = CanvasUtils.createCanvas(window.innerWidth, window.innerHeight);
 		document.body.appendChild(this.canvas);
 
-		this.handleResize = this.handleResize.bind(this);
 
-		window.addEventListener('resize', this.handleResize);
+		let scaleListContainer = document.createElement('ul');
+		scaleListContainer.className = 'scale-list-container';
+		scaleListContainer.id = 'scaleListContainer';
+		document.body.appendChild(scaleListContainer);
 
-		this.draw();
+		// append list items to the container
+		let listItems = "";
+		for (let key in ScaleList){
+			listItems += `<li class="scale-list-item ${key}" data-scale="${key}">${key}</li>`;
+		}
+		scaleListContainer.innerHTML = listItems;
 
+		// var theParent = document.getElementById('scaleListContainer');
+		scaleListContainer.addEventListener("click", this.handleScaleChange.bind(this), false);
+
+
+		// Inititalize URL manager
+		this.URLManager = new URL();
+
+		// get scale from URL query string or the default scale
+		const scale = this.URLManager.query.s || 'xenakis_chrom';
+		document.getElementsByClassName(scale)[0].classList.add(this.activeScaleClassName)
+		this.activeScaleListItem = document.getElementsByClassName(scale)[0]
+		// on resize event listener
+		window.addEventListener('resize', this.handleResize.bind(this));
+
+		// initialize audio
 		this.audio = new Audio();
 
+		//set the current scale
+		this.audio.scale = ScaleList[scale].frequencies;
+
+		// Initialize touch and pointer listeners
 		this.touches = new IdentifierIndexMap();
-		new MultiTouch({
+		new MultiTouch(this.canvas, {
 			onMouseDown: this.onMouseDown.bind(this),
 			onMouseUp: this.onMouseUp.bind(this),
 			onMouseMove: this.onMouseMove.bind(this),
 		});
+
+		// draw the canvas
+		this.draw();
 		
+	}
+
+	handleScaleChange(e) {
+		if (e.target !== e.currentTarget) {
+			let scaleId = e.target.dataset.scale;
+			console.log(e);
+			console.log(scaleId);
+
+			this.activeScaleListItem.classList.remove(this.activeScaleClassName);
+			this.activeScaleListItem = e.target;
+			this.activeScaleListItem.classList.add(this.activeScaleClassName);
+
+			this.updateScale(ScaleList[scaleId].frequencies)
+			this.URLManager.query.s = scaleId;
+			UpdateURL(`?${this.URLManager.query}`)
+
+			// document.getElementsByClassName('scaleId')[0].classList.add('')
+
+		}
+		e.stopPropagation();
 	}
 
 	handleResize() {
 		CanvasUtils.canvasResize(this.canvas, window.innerWidth, window.innerHeight);
 		this.draw();
 	}
+
+	updateScale(scale) {
+		const len = scale.length;
+		const p5 = getPerfectFifthIndex(scale);
+		const p4 = getPerfectFourthIndex(scale);
+
+		var colors = []
+		colors[0] = this.pallette.grey;
+		colors[p5] = this.pallette.pink;
+		colors[p4] = this.pallette.peach;
+		for (var i = 0; i < len; i++) {
+			if (!colors[i]) {
+				colors[i] = (i % 2 === 0) ? this.pallette.green : this.pallette.blue;
+			}
+		}
+		console.log(colors);
+
+		this.lines = len * this.octavesToDisplay;
+
+		this.colors = colors;
+		this.audio.scale = scale;
+		this.draw();
+	}
+
 
 	draw() {
 		// this._DrawAnimationFrame = requestAnimationFrame(this.draw.bind(this));
@@ -67,6 +168,8 @@ class App {
 		const h: number = this.canvas.height / this.pixelRatio;
 		const {colors, lines} = this;
 		const lineWidth = w/lines;
+
+		this.audio.scale.length
 
 		ctx.clearRect(0, 0, w, h);
 
@@ -88,7 +191,6 @@ class App {
 		// store the current noteIndex in activeTouches
 		this.activeTouches[id] = noteIndex;
 
-		console.log('note', noteIndex)
 
 		// Play the note
 		this.audio.NoteOn(noteIndex, pos.y, index);
@@ -117,8 +219,6 @@ class App {
 		// Has changed, update the current noteIndex in activeTouches
 		this.activeTouches[id] = noteIndex;
 
-		console.log('note', noteIndex)
-
 		// Play the note
 		this.audio.NoteOn(noteIndex, pos.y, index);
 	}
@@ -131,4 +231,6 @@ class App {
 }
 
 export default App;
+
+
 

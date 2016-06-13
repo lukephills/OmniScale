@@ -54,7 +54,7 @@ class Audio {
 
 		this.looper = new Looper(this.thereminOutput, this.recordingGain);
 
-		this.scale = [261.6255653006, 274.52698453615, 329.62755691287, 349.22823143301, 391.99543598175, 411.32572372413, 493.88330125613, 523.2511306012];
+		this.scale = [261.6255653006, 274.52698453615, 329.62755691287, 349.22823143301, 391.99543598175, 411.32572372413, 493.88330125613];
 	}
 
 	public createNodes() {
@@ -99,7 +99,6 @@ class Audio {
 		if (index < this.voiceCount) {
 
 			const freq = getFrequencyFromNoteIndexInScale(noteIndex, this.scale);
-			console.log('freq', freq)
 
 			this.oscillators[index].frequency = freq;
 			this.oscillators[index].output.gain.value = volume/100;
@@ -111,7 +110,7 @@ class Audio {
 	public NoteOff(index: number): void {
 		if (index < this.voiceCount) {
 			// this.oscillatorGains[index].gain.value = 0;
-			this.oscillators[index].release();
+			// this.oscillators[index].release();
 		}
 	}
 

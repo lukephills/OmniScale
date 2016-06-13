@@ -14,7 +14,7 @@ class MultiTouch {
 	public callbacks: MultiTouchCallbacks;
 	private _pointers;
 
-	constructor(callbacks: MultiTouchCallbacks) {
+	constructor(el, callbacks: MultiTouchCallbacks) {
 		this.callbacks = callbacks;
 		this._pointers = {};
 		
@@ -23,7 +23,7 @@ class MultiTouch {
 		this.onMouseUp = this.onMouseUp.bind(this);
 		this.onMouseMove = this.onMouseMove.bind(this);
 
-		window.addEventListener('mousedown', this.onMouseDown);
+		el.addEventListener('mousedown', this.onMouseDown);
 	}
 
 	onMouseDown(e){

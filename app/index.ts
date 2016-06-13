@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import 'normalize.css';
+import './Styles/styles.css';
 import App from './Components/app';
 
 

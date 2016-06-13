@@ -39,5 +39,8 @@ module.exports = {
     resolve: {
         root: [path.resolve('../app')],
         extensions: ['', '.js', '.ts']
+    },
+    node: {
+        fs: "empty"
     }
 };

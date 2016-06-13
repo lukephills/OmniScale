@@ -89,5 +89,8 @@ module.exports = {
   tslint: {
     emitErrors: true,
     failOnHint: true
+  },
+  node: {
+    fs: "empty"
   }
 }

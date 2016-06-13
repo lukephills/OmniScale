@@ -13,13 +13,12 @@ class ADSR extends ToneTs {
 	}
 
 
-	trigger(time,g,a,d,s,r) {
-
+	trigger(time, g = 1, a = 0.01, r = 0.01) {
 		this.gainNode.gain.setValueAtTime(0.001, time);
-		this.gainNode.gain.linearRampToValueAtTime(g, time + a);
-		this.gainNode.gain.linearRampToValueAtTime(s*g, time + a + d);
-		this.gainNode.gain.linearRampToValueAtTime(0.001, time + a + d + r);
+		this.gainNode.gain.exponentialRampToValueAtTime(g, time + a);
+		this.gainNode.gain.exponentialRampToValueAtTime(0.001, time + a + r);
 	};
+
 }
 
 export default ADSR;

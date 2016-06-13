@@ -1,0 +1,33 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+
+.scale-list-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 50vh;
+    overflow: scroll;
+    background: rgb(254,254,245);
+    padding: 30px 30px 30px 65px;
+    margin: 0;
+    list-style-type: none;
+}
+
+.scale-list-item {
+    padding: 8px 0 2px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.scale-list-item--active {
+    box-shadow: cadetblue 0px 2px 0;
+}
+
+.scale-list-item:hover, .scale-list-item--active {
+    color: cadetblue;
+}
+
+canvas {
+    cursor: pointer;
+}

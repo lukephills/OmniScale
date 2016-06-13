@@ -1,4 +1,26 @@
-var TuningList = {
+/*
+TODO: Add scales from tonal scale dictionary
+TODO: Add chords from tonal chord dictionary
+https://github.com/danigb/music.scale.dictionary/blob/master/dict/scales.json
+
+*/
+
+	export const ScaleList = {
+		"just": {
+			"frequencies": [261.6255653006, 261.6255653006*(9/8), 261.6255653006*(5/4), 261.6255653006*(4/3), 261.6255653006*(3/2), 261.6255653006*(5/3), 261.6255653006*(15/8)],
+			"description": "5 out of 19-tET"
+		},
+		"EqualTemp": {
+			"frequencies": [261.6255653006,
+				261.6255653006 * Math.pow(1.0594645048603144,2), 
+				261.6255653006 * Math.pow(1.0594645048603144,4),
+				261.6255653006 * Math.pow(1.0594645048603144,5),
+				261.6255653006 * Math.pow(1.0594645048603144,7),
+				261.6255653006 * Math.pow(1.0594645048603144,9),
+				261.6255653006 * Math.pow(1.0594645048603144,11),
+				],
+			"description": "5 out of 19-tET"
+		},
     "05-19": {
         "frequencies": [261.6255653006, 302.72962012827, 350.29154279212, 405.32593044476, 469.00678383895, 523.2511306012],
         "description": "5 out of 19-tET"
@@ -316,11 +338,11 @@ var TuningList = {
         "description": "Well-temperament for Bach, from Jacob Breetvelt's Tuner"
     },
     "badings1": {
-        "frequencies": [261.6255653006, 294.32876096318, 327.03195662575, 359.73515228832, 392.4383479509, 425.14154361347, 457.84473927605, 523.2511306012, 588.65752192635, 654.0639132515],
+        "frequencies": [261.6255653006, 294.32876096318, 327.03195662575, 359.73515228832, 392.4383479509, 425.14154361347, 457.84473927605],
         "description": "Henk Badings, harmonic scale, Lydomixolydisch"
     },
     "badings2": {
-        "frequencies": [261.6255653006, 290.69507255622, 327.03195662575, 373.75080757229, 402.50086969323, 436.04260883433, 475.68284600109, 523.2511306012, 581.39014511244, 654.0639132515],
+        "frequencies": [261.6255653006, 290.69507255622, 327.03195662575, 373.75080757229, 402.50086969323, 436.04260883433, 475.68284600109],
         "description": "Henk Badings, subharmonic scale, Dorophrygisch"
     },
     "bagpipe1": {
