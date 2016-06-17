@@ -2,21 +2,37 @@
     box-sizing: border-box;
 }
 
-.scale-list-container {
+body, html {height:100%;}
+body {overflow: hidden; }
+div.wrap {height:100%; overflow:hidden;}
+
+.menu {
+    display: flex;
+    flex-direction: row;
     position: absolute;
-    top: 0;
-    left: 0;
+    width: 100%;
+}
+
+.menu > div {
+    width:33.333%;
+}
+
+.scale-list-container {
     height: 50vh;
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
     background: rgb(254,254,245);
     padding: 30px 30px 30px 65px;
     margin: 0;
     list-style-type: none;
+    /*border-bottom: 2px solid #C6C7C0;*/
+    color: #C6C7C0;
 }
 
 .scale-list-item {
     padding: 8px 0 2px;
-    font-size: 20px;
+    font-size: 18px;
     cursor: pointer;
 }
 
@@ -26,6 +42,34 @@
 
 .scale-list-item:hover, .scale-list-item--active {
     color: cadetblue;
+}
+
+.key-letters {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 50vh;
+    background: rgb(254,254,245);
+    margin: 0;
+}
+
+.menu-title {
+    position: fixed;
+    left: 3px;
+    transform: rotate(270deg);
+
+    text-transform: lowercase;
+    font-style: italic;
+    font-size: 24px;
+    z-index: 1;
+}
+
+.menu-title--top {
+    top: calc(25% - 19px);
+}
+
+.menu-title--bottom {
+    bottom: calc(25% - 19px);
 }
 
 canvas {

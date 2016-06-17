@@ -38,7 +38,7 @@ class Audio {
 	public analysers: IAnalysers;
 
 	// Oscillators
-	public oscillators: Sine[];
+	public chime: Sine;
 	public scuzz: OscillatorNode;
 
 	private _frequencyMultiplier = 15;
@@ -79,16 +79,11 @@ class Audio {
 		}
 
 		// Oscillators
-		this.oscillators = [];
 		this.scuzz = this.context.createOscillator();
 
 
 		// AUDIO NODE SETUP
-		for (let i: number = 0; i < this.voiceCount; i++) {
-			this.oscillators.push(new Sine(this.context));
-			// this.filters.push(this.context.createBiquadFilter());
-			// this.oscillatorGains.push(this.context.createGain());
-		}
+		this.chime = new Sine(this.context);
 	}
 
 	initAudioContext(){
@@ -96,29 +91,28 @@ class Audio {
 	}
 
 	public NoteOn(noteIndex: number, volume: number, index: number): void {
-		if (index < this.voiceCount) {
+		// if (index < this.voiceCount) {
 
 			const freq = getFrequencyFromNoteIndexInScale(noteIndex, this.scale);
 
-			this.oscillators[index].frequency = freq;
-			this.oscillators[index].output.gain.value = volume/100;
-			this.oscillators[index].trigger();
+			this.chime.frequency = freq;
+			this.chime.trigger(volume/100);
 
-		}
+		// }
 	}
 
 	public NoteOff(index: number): void {
-		if (index < this.voiceCount) {
+		// if (index < this.voiceCount) {
 			// this.oscillatorGains[index].gain.value = 0;
 			// this.oscillators[index].release();
-		}
+		// }
 	}
 
-	public StopAll(): void {
-		for (let i: number = 0; i < this.voiceCount; i++) {
-			this.NoteOff(i);
-		}
-	}
+	// public StopAll(): void {
+	// 	for (let i: number = 0; i < this.voiceCount; i++) {
+	// 		this.NoteOff(i);
+	// 	}
+	// }
 
 	// public SetWaveform(value: WaveformStringType): void {
 	// 	this.oscillators.forEach((osc: OscillatorNode) => {
@@ -186,11 +180,8 @@ class Audio {
 		// Connect the Scuzz
 		this.scuzz.connect(this.scuzzGain);
 
-		for (let i: number = 0; i < this.voiceCount; i++) {
-			// this.scuzzGain.connect(this.oscillators[i].detune as any);
-			this.oscillators[i].connect(this.compressor);
-			// this.filters[i].connect(this.delay);
-		}
+
+		this.chime.connect(this.compressor);
 
 		// this.delay.connect(this.feedback);
 		// this.delay.connect(this.compressor);

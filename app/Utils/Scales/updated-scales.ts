@@ -338,11 +338,11 @@ https://github.com/danigb/music.scale.dictionary/blob/master/dict/scales.json
         "description": "Well-temperament for Bach, from Jacob Breetvelt's Tuner"
     },
     "badings1": {
-        "frequencies": [261.6255653006, 294.32876096318, 327.03195662575, 359.73515228832, 392.4383479509, 425.14154361347, 457.84473927605],
+        "frequencies": [261.6255653006, 294.32876096318, 327.03195662575, 359.73515228832, 392.4383479509, 425.14154361347, 457.84473927605, 588.65752192635, 654.0639132515],
         "description": "Henk Badings, harmonic scale, Lydomixolydisch"
     },
     "badings2": {
-        "frequencies": [261.6255653006, 290.69507255622, 327.03195662575, 373.75080757229, 402.50086969323, 436.04260883433, 475.68284600109],
+        "frequencies": [261.6255653006, 290.69507255622, 327.03195662575, 373.75080757229, 402.50086969323, 436.04260883433, 475.68284600109, 581.39014511244, 654.0639132515],
         "description": "Henk Badings, subharmonic scale, Dorophrygisch"
     },
     "bagpipe1": {

@@ -4,9 +4,9 @@ export interface MultiTouchCallbacks {
 	onMouseDown(event, id): void;
 	onMouseUp(event, id): void;
 	onMouseMove(event, id): void;
-	// onTouchDown(event, id): void;
-	// onTouchUp(event, id): void;
-	// onTouchMove(event, id): void;
+	onTouchStart(event, id): void;
+	onTouchEnd(event, id): void;
+	onTouchMove(event, id): void;
 }
 
 class MultiTouch {
@@ -24,6 +24,9 @@ class MultiTouch {
 		this.onMouseMove = this.onMouseMove.bind(this);
 
 		el.addEventListener('mousedown', this.onMouseDown);
+		el.addEventListener('touchstart', this.onTouchStart.bind(this));
+		el.addEventListener('touchend', this.onTouchEnd.bind(this));
+		el.addEventListener('touchmove', this.onTouchMove.bind(this));
 	}
 
 	onMouseDown(e){
@@ -34,12 +37,24 @@ class MultiTouch {
 		this._pointers[MOUSE_ID] = true;
 
 		if (this.callbacks.onMouseDown) {
-			// console.log('down')
 			this.callbacks.onMouseDown(e, MOUSE_ID);
 		}
 	}
 
-	onMouseUp(e) {
+	onTouchStart(e: TouchEvent){
+		e.preventDefault();
+
+		const touches = e.changedTouches;
+		for (let i = 0; i < touches.length; i++) {
+			const touch = touches[i];
+			this._pointers[touch.identifier] = true;
+			if (this.callbacks.onTouchStart) {
+				this.callbacks.onTouchStart(touch, touch.identifier);
+			}
+		}
+	}
+
+	onMouseUp(e: MouseEvent) {
 		e.preventDefault();
 		// if this pointer exists
 		if (this._pointers[MOUSE_ID]) {
@@ -53,13 +68,39 @@ class MultiTouch {
 		window.removeEventListener('mousemove', this.onMouseMove)
 	}
 
-	onMouseMove(e) {
+	onTouchEnd(e: TouchEvent) {
+		e.preventDefault();
+		const touches = e.changedTouches;
+		for (let i = 0; i < touches.length; i++) {
+			const touch = touches[i];
+			if (this.callbacks.onTouchEnd) {
+				this.callbacks.onTouchEnd(touch, touch.identifier);
+			}
+			delete this._pointers[touch.identifier];
+		}
+	}
+
+	onMouseMove(e: MouseEvent) {
 		e.preventDefault();
 
 		// if this pointer is down
 		if (this._pointers[MOUSE_ID]) {
 			if (this.callbacks.onMouseMove) {
 				this.callbacks.onMouseMove(e, MOUSE_ID);
+			}
+		}
+	}
+
+	onTouchMove(e: TouchEvent) {
+		e.preventDefault();
+		const touches = e.changedTouches;
+		for (let i = 0; i < touches.length; i++) {
+			const touch: any = touches[i];
+			if (this._pointers[touch.identifier]) {
+				// if (isTouchInBounds && this._pointers[touch.identifier]) {
+				if (this.callbacks.onTouchMove) {
+					this.callbacks.onTouchMove(touch, touch.identifier);
+				}
 			}
 		}
 	}
