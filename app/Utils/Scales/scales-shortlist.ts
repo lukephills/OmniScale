@@ -3,8 +3,10 @@ import {notEqual} from 'assert';
 const ratio = 1.0594645048603144;
 const middleC = 261.6255653006;
 const NOTE_STRINGS = [ 'C', 'Db', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B' ]
+
 // Gets frequency from degree in 12 tone equal temp
 function tET(degree) {
+  //TODO: instead of fixed 12 tone ratio, calculate it
   return middleC * Math.pow(ratio, degree);
 }
 
@@ -17,19 +19,19 @@ const midiPitchC = 60
  * @param tuning - Optional, default is 440
  * @returns {number}
  */
-function midiToFreq(midi: number, tuning = 440): number {
+export function midiToFreq(midi: number, tuning = 440): number {
   return Math.pow(2, (midi - 69) / 12) * tuning;
 }
 
-function freqToNote(freq: number, tuning = 440): string {
+export function freqToNote(freq: number, tuning = 440): string {
   return midiToNote(freqToMidi(freq, tuning));
 }
 
-function freqToMidi(freq: number, tuning = 440): number {
+export function freqToMidi(freq: number, tuning = 440): number {
   return Math.round(69 + (12 * ((Math.log(freq) - Math.log(tuning)) / Math.log(2))));
 }
 
-function midiToNote(midi: number): string {
+export function midiToNote(midi: number): string {
   return NOTE_STRINGS[midi % 12] + (Math.floor(midi / 12) - 1);
 }
 
@@ -42,232 +44,244 @@ function midiToNote(midi: number): string {
 var Scales = {
   "Acoustic": {
     "intervals": [0,2,4,6,7,9],
-    "tEt": true,
+    "temp": 12,
     "description": "The acoustic scale, (also known as the overtone scale) differs from the major scale in having a raised fourth and lowered seventh scale degree. Traditionally, the scale persists in the music of peoples of South Siberia, especially in Tyvan music."
   },
   "Adonai Malakh": {
     "intervals": [0,2,4,5,7,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": "The Adonai malakh scale is a musical mode used in Jewish music. \"Adonai malakh\" (\"God is King\"), a line from Psalm 93, is set using the Adonai malakh scale at the close of the introduction to the Kabalat Shabat (Friday evening synagogue service)."
   },
   "Aeolian (Natural Minor)": {
     "intervals": [0,2,3,5,7,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": "The Aeolian mode is also known as the 'natural minor' scale and has the same notes as its relative major scale, but is built starting from the sixth note. On a piano using only white keys, the Aeolian mode would start from A"
   },
   "Algerian": {
     "intervals": [0,2,3,6,7,8,11],
-    "tEt": true,
+    "temp": 12,
     "description": "The Algerian Scale is a scale which is frequently found in Algerian, Berber, and North African music. The frequent use of 1.5 steps(or whole-and-a-half steps) in the scale helps create a sound which is commonly associated with Moorish music."
   },
-  "Altered": {"intervals": [0,1,3,4,6,8,10],
-    "tEt": true,
+  "Altered": {
+    "intervals": [0,1,3,4,6,8,10],
+    "temp": 12,
     "description": ""
   },
-  "Augmented": {"intervals": [0,3,4,7,8,11],
-    "tEt": true,
+  "Augmented": {
+    "intervals": [0,3,4,7,8,11],
+    "temp": 12,
     "description": ""
   },
-  "Bebop Dominant": {"intervals": [0,2,4,5,7,9,10,11],
-    "tEt": true,
+  "Bebop Dominant": {
+    "intervals": [0,2,4,5,7,9,10,11],
+    "temp": 12,
     "description": ""
   },
-  "Blues": {"intervals": [0,3,5,6,7,10],
-    "tEt": true,
+  "Blues": {
+    "intervals": [0,3,5,6,7,10],
+    "temp": 12,
     "description": ""
   },
-  "Chromatic": {"intervals": [0,1,2,3,4,5,6,7,8,9,10,11],
-    "tEt": true,
+  "Chromatic": {
+    "intervals": [0,1,2,3,4,5,6,7,8,9,10,11],
+    "temp": 12,
     "description": ""
   },
-  "Dorian": {"intervals": [0,2,3,5,7,9,10],
-    "tEt": true,
+  "Dorian": {
+    "intervals": [0,2,3,5,7,9,10],
+    "temp": 12,
     "description": ""
   },
-  "Double Harmonic": {"intervals": [0,1,4,5,7,8,11],
-    "tEt": true,
+  "Double Harmonic": {
+    "intervals": [0,1,4,5,7,8,11],
+    "temp": 12,
     "description": ""
   },
-  "Enigmatic": {"intervals": [0,1,4,6,8,10,11],
-    "tEt": true,
+  "Enigmatic": {
+    "intervals": [0,1,4,6,8,10,11],
+    "temp": 12,
     "description": ""
   },
-  "Flamenco": {"intervals": [0,1,4,5,7,8,11],
-    "tEt": true,
+  "Flamenco": {
+    "intervals": [0,1,4,5,7,8,11],
+    "temp": 12,
     "description": ""
   },
-  "Gypsy": {"intervals": [0,2,3,6,7,8,10],
-    "tEt": true,
+  "Gypsy": {
+    "intervals": [0,2,3,6,7,8,10],
+    "temp": 12,
     "description": ""
   },
-  "Half Diminished": {"intervals": [0,2,3,5,6,8,10],
-    "tEt": true,
+  "Half Diminished": {
+    "intervals": [0,2,3,5,6,8,10],
+    "temp": 12,
     "description": ""
   },
   "Harmonic Major": {"intervals": [0,2,4,5,7,8,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
-  "Harmonic Minor": {"intervals": [0,2,3,5,7,8,11],
-    "tEt": true,
+  "Harmonic Minor": {
+    "intervals": [0,2,3,5,7,8,11],
+    "temp": 12,
     "description": ""
   },
   "Hirajoshi": {"intervals": [0,2,3,7,8],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
-  "Hungarian Gypsy": {"intervals": [0,2,3,6,7,8,11],
-    "tEt": true,
+  "Hungarian Gypsy": {
+    "intervals": [0,2,3,6,7,8,11],
+    "temp": 12,
     "description": ""
   },
   "Hungarian Minor": {
     "intervals": [0,2,3,6,7,8,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   }, //TODO: check - is same as gypsy
   "Insen": {
     "intervals": [0,1,5,7,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Major": {
     "intervals": [0,2,4,5,7,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Istrian": {
     "intervals": [0,1,3,4,6,7],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Iwato": {
     "intervals": [0,1,5,6,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Just Major": {
     "frequencies": [261.6255653006, 294.328760963175, 327.03195662575, 348.8340870674666, 392.4383479509, 436.04260883433335, 490.54793493862496],
-    "tEt": false,
     "description": "Major scale using 'just' tuning. The frequencies of notes are related by ratios of small whole numbers. Any interval tuned in this way is called a pure or just interval. Pure intervals are important in music because they naturally tend to be perceived by humans as consonant: pleasing or satisfying. This differs from Equal Temperament where an octave is divided into 12 equal parts."
   },
   "Locrian": {
     "intervals": [0,1,3,5,6,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Lydian Augmented": {
     "intervals": [0,2,4,6,8,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Lydian": {
     "intervals": [0,2,4,6,7,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Major Bepop": {
     "intervals": [0,2,4,5,7,8,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Major Bepop": {
     "intervals": [0,2,4,5,7,8,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   }, //TODO: check duplicate
-  "Major Locran": {
+  "Major Locrian": {
     "intervals": [0,2,4,5,6,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Major Pentatonic": {
     "intervals": [0,2,4,7,9],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Melodic Minor": {
     "intervals": [0,2,3,5,7,8,9,10,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Melodic Minor Ascending": {
     "intervals": [0,2,3,5,7,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Minor Pentatonic": {
     "intervals": [0,3,5,7,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Minyō": {
     "intervals": [0,2,5,7,9],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Mixolydian": {
     "intervals": [0,2,4,5,7,9,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Neapolitan Major": {
     "intervals": [0,1,3,5,7,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Neapolitan Minor": {
     "intervals": [0,1,3,5,7,8,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Octatonic": {
     "intervals": [0,2,3,5,6,8,9,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Persian": {
     "intervals": [0,1,4,5,6,8,11],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Phrygian Dominant": {
     "intervals": [0,1,4,5,7,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   }, //https://en.wikipedia.org/wiki/Phrygian_dominant_scale
   "Phrygian": {
     "intervals": [0,1,3,5,7,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Prometheus": {
     "intervals": [0,2,4,6,9,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Tritone": {
     "intervals": [0,1,4,6,7,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Ukranian Dorian": {
     "intervals": [0,2,3,6,7,9,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Whole Tone": {
     "intervals": [0,2,4,6,8,10],
-    "tEt": true,
+    "temp": 12,
     "description": ""
   },
   "Major Triad": {
     "intervals": [0,4,7],
-    "tEt": true,
+    "temp": 12,
     "description": "The three notes that make up a major chord include the root note, a major third and a perfect fifth. It is one of the basic building blocks of tonal music, the Western common practice period and Western pop, folk and rock music."
   },
   "Minor Triad": {
     "intervals": [0,3,7],
-    "tEt": true,
+    "temp": 12,
     "description": "The minor chord, along with the major chord, is one of the basic building blocks of tonal music. In comparison with a major chord, minor has a darker and sadder sound."
   },
 }
@@ -290,7 +304,7 @@ var Scales = {
 export const ScaleList = {
   "just": {
     "frequencies": [261.6255653006, 261.6255653006*(9/8), 261.6255653006*(5/4), 261.6255653006*(4/3), 261.6255653006*(3/2), 261.6255653006*(5/3), 261.6255653006*(15/8)],
-    "description": "5 out of 19-tET"
+    "description": "5 out of 19-tET",
   },
   "EqualTemp": {
     "frequencies": [tET(0),
