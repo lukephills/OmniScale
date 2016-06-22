@@ -3,7 +3,7 @@ import MultiTouch from './MultiTouch';
 import Audio from './Audio';
 import {IdentifierIndexMap, isCordovaIOS} from '../Utils/utils';
 import {getItemFromArrayPool} from '../Utils/array';
-// import styles from '../Styles/styles.css';
+
 
 const URL: any = require('domurl'); //TODO: make typescript definitions
 

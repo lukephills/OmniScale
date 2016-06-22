@@ -10,7 +10,7 @@
   },
   "exclude": [
     "node_modules",
-    "config",
+    "_old-config",
     "dev_server.js",
     "typings/browser.d.ts",
     "typings/browser"

@@ -184,11 +184,6 @@ var Scales = {
     "temp": 12,
     "description": ""
   },
-  "Major Bepop": {
-    "intervals": [0,2,4,5,7,8,9,11],
-    "temp": 12,
-    "description": ""
-  }, //TODO: check duplicate
   "Major Locrian": {
     "intervals": [0,2,4,5,6,8,10],
     "temp": 12,
