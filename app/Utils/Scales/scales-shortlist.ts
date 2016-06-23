@@ -41,7 +41,7 @@ export function midiToNote(midi: number): string {
 
 
 
-var Scales = {
+export const Scales = {
   "Acoustic": {
     "intervals": [0,2,4,6,7,9],
     "temp": 12,

@@ -11,8 +11,12 @@
   "exclude": [
     "node_modules",
     "_old-config",
-    "dev_server.js",
     "typings/browser.d.ts",
     "typings/browser"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "library": "es6",
+    "useBabel": true,
+    "useCache": true
+  }
 }

@@ -25,3 +25,7 @@ const startApp = () => {
 // } else {
 	startApp();
 // }
+
+if ((<any>module).hot) {
+	(<any>module).hot.accept();
+}

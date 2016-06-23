@@ -7,8 +7,10 @@ import {getItemFromArrayPool} from '../Utils/array';
 
 const URL: any = require('domurl'); //TODO: make typescript definitions
 
-//TODO: seperate out to npm library
-import {ScaleList} from '../Utils/Scales/updated-scales';
+//TODO: switch to short list
+import {ScaleList as Scales} from '../Utils/Scales/updated-scales';
+// import {Scales} from '../Utils/Scales/scales-shortlist';
+
 import {UpdateURL} from '../Utils/Urls';
 import {getPerfectFifthIndex, getPerfectFourthIndex} from '../Utils/Audio/scales';
 
@@ -87,7 +89,7 @@ class App {
 		this.audio = new Audio();
 
 		//set the current scale and draw
-		this.updateScale(ScaleList[scaleName].frequencies)
+		this.updateScale(Scales[scaleName].frequencies)
 
 		// Initialize touch and pointer listeners
 		this.touches = new IdentifierIndexMap();
@@ -106,7 +108,7 @@ class App {
 
 		// append list items to the container
 		let listItems = "";
-		for (let key in ScaleList) {
+		for (let key in Scales) {
 			listItems += `<li class="scale-list-item ${key}" data-scale="${key}">${key}</li>`;
 		}
 		scaleListContainer.innerHTML = listItems;
@@ -116,14 +118,13 @@ class App {
 	handleScaleChange(e) {
 		if (e.target !== e.currentTarget) {
 			let scaleId = e.target.dataset.scale;
-			console.log(e);
 			console.log(scaleId);
 
 			this.activeScaleListItem.classList.remove(this.activeScaleClassName);
 			this.activeScaleListItem = e.target;
 			this.activeScaleListItem.classList.add(this.activeScaleClassName);
 
-			this.updateScale(ScaleList[scaleId].frequencies)
+			this.updateScale(Scales[scaleId].frequencies)
 			this.URLManager.query.s = scaleId;
 			UpdateURL(`?${this.URLManager.query}`)
 		}
@@ -142,7 +143,7 @@ class App {
 		const p5 = getPerfectFifthIndex(scale);
 		const p4 = getPerfectFourthIndex(scale);
 
-		var colors = []
+		var colors = [];
 		colors[0] = this.palette.grey;
 		colors[p5] = this.palette.pink;
 		colors[p4] = this.palette.peach;
